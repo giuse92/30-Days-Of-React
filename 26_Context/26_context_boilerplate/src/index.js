@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
-import ReactDOM, { findDOMNode } from 'react-dom'
+import React, {useContext } from 'react'
+import ReactDOM from 'react-dom'
 import useFetch from './useFetch'
 
 const MyContext = React.createContext();
@@ -13,23 +12,23 @@ const MyProvider = (props) => {
 }
 
 const Country = (props) => {
+  const context = useContext(MyContext);
+
   return (
-    <MyContext.Consumer>
-      {context => context.map((country) => (
-        <div className='country'>
-          <div className='country_flag'>
-            <img src={country.flag} alt={country.name} />
-          </div>
-          <h3 className='country_name'>{country.name.toUpperCase()}</h3>
-          <div class='country_text'>
-            <p>
-              <span>Population: </span>
-              {country.population}
-            </p>
-          </div>
+    context.map((country, i) => (
+      <div key={`country-n-${i}`} className='country'>
+        <div className='country_flag'>
+          <img src={country.flag} alt={country.name} />
         </div>
-      ))}
-    </MyContext.Consumer>
+        <h3 className='country_name'>{country.name.toUpperCase()}</h3>
+        <div className='country_text'>
+          <p>
+            <span>Population: </span>
+            {country.population}
+          </p>
+        </div>
+      </div>
+    ))
   )
 }
 
@@ -47,7 +46,7 @@ const App = (props) => {
             )
             }
           </MyContext.Consumer>
-          <Country />
+          <Country />          
         </div>
       </div>
     </MyProvider>
